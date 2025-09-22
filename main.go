@@ -22,6 +22,8 @@ func main() {
 
 }
 
+// This solution creates a custom context from parent context. This new context such as bakgroud context is never cancelled
+// but unlikely preserve the parent data.
 func proccessWorkWitDetachedContext() {
 	start := time.Now()
 	ctx, cancel := context.WithCancel(context.Background())
@@ -48,6 +50,8 @@ func proccessWorkWitDetachedContext() {
 
 }
 
+// This solution creates an independent context background that is never cancelled
+// but loses data from parent context.
 func proccessWorkWithBackgroundContext() {
 	start := time.Now()
 	ctx, cancel := context.WithCancel(context.Background())
