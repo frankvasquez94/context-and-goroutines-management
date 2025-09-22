@@ -1,9 +1,8 @@
-package detach
+package background
 
 import (
 	"context"
 	"context-and-goroutines-management/internal"
-	"context-and-goroutines-management/internal/platform/kit"
 	"fmt"
 	"time"
 )
@@ -29,12 +28,11 @@ func (s *service) Proccess(ctx context.Context) error {
 	fmt.Println("Proccessing my request with traceID: ", traceID)
 	time.Sleep(2 * time.Second)
 
-	// Creating my detached context
-	dContextAuditor := kit.DetachedContext(ctx)
-	dContextPrinter := kit.DetachedContext(ctx)
-
-	go s.auditor.Audit(dContextAuditor)
-	go s.printer.PrintLog(dContextPrinter)
+	// Creating a goroutine with context.Background()
+	// these goroutine does not cancell, but lose context data from parent
+	// such as telemetry data
+	go s.auditor.Audit(context.Background())
+	go s.printer.PrintLog(context.Background())
 
 	fmt.Println("End the proccess, but go routines are always working...")
 
